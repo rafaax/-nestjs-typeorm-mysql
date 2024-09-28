@@ -1,8 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { users_auth } from "@prisma/client";
 import { Role } from "src/enums/role.enum";
-import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from 'bcrypt';
 import { MailerService } from "@nestjs-modules/mailer";
 import { find } from "rxjs";
@@ -11,7 +9,6 @@ import { find } from "rxjs";
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly prisma: PrismaService,
         private readonly mailer: MailerService
     ) {}
 
