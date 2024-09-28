@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `users_auth` ADD COLUMN `role` INTEGER NOT NULL DEFAULT 1;
