@@ -5,7 +5,7 @@ import { UpdatePatchUserDTO } from "./dto/update-patch.dto";
 @Injectable()
 export class UserService {
 
-    constructor(private readonly prisma: PrismaService) {}
+    constructor() {}
     
     async create({name,  email, dob, cep, cnpj}: CreateUserDTO) {
             return await this.prisma.users.create({
