@@ -4,7 +4,7 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { FileModule } from "src/file/file.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "src/user/entity/user.entity";
+import { UserEntity } from "./entity/user.entity";
 
 @Module({
     imports: [

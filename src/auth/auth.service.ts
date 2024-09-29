@@ -5,8 +5,8 @@ import * as bcrypt from 'bcrypt';
 import { MailerService } from "@nestjs-modules/mailer";
 import { find } from "rxjs";
 import { Repository } from "typeorm";
-import { UserEntity } from "src/user/entity/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { UserEntity } from "./entity/user.entity";
 
 @Injectable()
 export class AuthService {
@@ -55,6 +55,14 @@ export class AuthService {
         // //         login: login
         // //     }
         // // });
+
+        const user = await this.usersRepository.findOne({
+            where: {
+                login: login
+            }
+        })
+
+        console.log(user)
 
         // if(find_user == undefined){
         //     throw new NotFoundException("Usuário invalido...");

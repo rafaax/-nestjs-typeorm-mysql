@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch.dto";
 import { Repository } from "typeorm";
-import { UserEntity } from "./entity/user.entity";
+import { UserEntity } from "../auth/entity/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
