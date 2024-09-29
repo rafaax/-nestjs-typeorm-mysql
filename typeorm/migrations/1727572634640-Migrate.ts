@@ -4,7 +4,7 @@ export class Migrate1727572634640 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         queryRunner.createTable(new Table({
-           name: "users-auth",
+           name: "users_auth",
             columns: [
                 {
                     name: "id",
