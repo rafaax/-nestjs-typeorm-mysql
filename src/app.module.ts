@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
@@ -18,7 +17,7 @@ import { UserEntity } from './auth/entity/user.entity';
       ttl: 60,
       limit: 10,
     }]), 
-    UserModule, AuthModule,
+    AuthModule,
     MailerModule.forRoot({
       transport: {
         host: 'smtp.ethereal.email',

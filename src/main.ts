@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { UserModule } from './user/user.module';
 import { ValidationPipe } from '@nestjs/common';
 import { LogInterceptor } from './interceptors/log.interceptor';
 

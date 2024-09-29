@@ -1,6 +1,8 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({
+    name: 'users_auth' // table name
+})
 export class UserEntity {
 
     @PrimaryGeneratedColumn({
