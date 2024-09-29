@@ -7,6 +7,8 @@ import { find } from "rxjs";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./entity/user.entity";
+import { log } from "console";
+import { create } from "domain";
 
 @Injectable()
 export class AuthService {
@@ -74,7 +76,7 @@ export class AuthService {
         }
    
     }
-    
+
     async forget(email:string){
 
         const find_email = await this.usersRepository.findOne({
@@ -101,23 +103,34 @@ export class AuthService {
 
     async register(email: string, login: string, password: string, role: any){
         
-        // if(role != undefined){
-        //     role = parseInt(role);
-        // }
+        if(role != undefined){
+            role = parseInt(role);
+        }
 
-        // let password_hash = await bcrypt.hash(password, await bcrypt.genSalt())
+        const email_exists = await this.usersRepository.exists({
+            where: {
+                email: email
+            } 
+        }) 
 
-        // const user =  await this.prisma.users_auth.create({
-        //     data: {
-        //         email: email,
-        //         pass: password_hash, 
-        //         login: login,
-        //         role: role
-        //     }
-        // });
+        if(email_exists == true){
+            throw new BadRequestException('Email já existe!!!');
+        }
 
-        // this.createToken(user)
-        // return {msg: 'Usuário criado com sucesso!'}
+        let password_hash = await bcrypt.hash(password, await bcrypt.genSalt());
+
+        const create_user = this.usersRepository.create({
+            email: email, 
+            pass: password_hash, 
+            login: login, 
+            role: role
+        });
+
+        const user = await this.usersRepository.save(create_user)
+
+        const token = await this.createToken(user)
+
+        return {msg: 'Usuário criado com sucesso!', token: token}
     }
 
     async show_user(id: number){
