@@ -1,36 +1,39 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
-    name: 'users_auth' // table name
+  name: 'users_auth', // table name
 })
 export class UserEntity {
+  @PrimaryGeneratedColumn({
+    unsigned: true,
+  })
+  id: number;
 
-    @PrimaryGeneratedColumn({
-        unsigned: true
-    })
-    id: number;
+  @Column({
+    length: 60,
+  })
+  login: string;
 
-    @Column({
-        length: 60
-    })
-    login: string;
+  @Column({
+    type: 'longtext',
+  })
+  pass: string;
 
-    @Column({
-        type: "longtext"
-    })
-    pass: string;
+  @Column({
+    length: 50,
+  })
+  email: string;
 
-    @Column({
-        length: 50
-    })
-    email: string;
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  created_at: string;
 
-    
-    @CreateDateColumn({
-        type: "timestamp"
-    })
-    created_at: string;
-
-    @Column()
-    role: number
+  @Column()
+  role: number;
 }
