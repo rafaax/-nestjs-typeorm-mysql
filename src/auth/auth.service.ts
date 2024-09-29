@@ -4,15 +4,20 @@ import { Role } from "src/enums/role.enum";
 import * as bcrypt from 'bcrypt';
 import { MailerService } from "@nestjs-modules/mailer";
 import { find } from "rxjs";
+import { Repository } from "typeorm";
+import { UserEntity } from "src/user/entity/user.entity";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly mailer: MailerService
+        private readonly mailer: MailerService, 
+        @InjectRepository(UserEntity)
+        private usersRepository: Repository<UserEntity>
     ) {}
 
-    async createToken(user: users_auth){
+    async createToken(user: UserEntity){
         return this.jwtService.sign({
             sub: user.id,
             name: user.login,
@@ -45,25 +50,25 @@ export class AuthService {
     }
 
     async login(login: string, password: string){
-        const  find_user = await this.prisma.users_auth.findFirst({
-            where: {
-                login: login
-            }
-        });
+        // // const  find_user = await this.prisma.users_auth.findFirst({
+        // //     where: {
+        // //         login: login
+        // //     }
+        // // });
 
-        if(find_user == undefined){
-            throw new NotFoundException("Usuário invalido...");
-        }
+        // if(find_user == undefined){
+        //     throw new NotFoundException("Usuário invalido...");
+        // }
         
 
-        // faz a comparação da string decryptada com a senha passada pelo user no post
-        if(await bcrypt.compare(password, find_user.pass)){
-            return {
-                "access_token": await this.createToken(find_user)
-            }
-        }else{
-            throw new NotFoundException("Usuário invalido...");
-        }
+        // // faz a comparação da string decryptada com a senha passada pelo user no post
+        // if(await bcrypt.compare(password, find_user.pass)){
+        //     return {
+        //         "access_token": await this.createToken(find_user)
+        //     }
+        // }else{
+        //     throw new NotFoundException("Usuário invalido...");
+        // }
 
 
             
@@ -75,74 +80,73 @@ export class AuthService {
 
         const id : number = 0;
 
-        const user = await this.prisma.users_auth.update({
-            where: {
-                id: id
-            },
-            data: {
-                pass: password
-            }
-        })
+        // const user = await this.prisma.users_auth.update({
+        //     where: {
+        //         id: id
+        //     },
+        //     data: {
+        //         pass: password
+        //     }
+        // })
 
-        return this.createToken(user);
+        // return this.createToken(user);
 
     }
 
     async forget(email:string){
 
-        const find_email = await this.prisma.users_auth.findFirst({
-            where: {
-                email: email
-            }
-        })
+        // const find_email = await this.prisma.users_auth.findFirst({
+        //     where: {
+        //         email: email
+        //     }
+        // })
 
-        if(find_email == undefined){
-            throw new BadRequestException("Email incorreto!");
-        }
+        // if(find_email == undefined){
+        //     throw new BadRequestException("Email incorreto!");
+        // }
 
-        console.log(find_email);
+        // console.log(find_email);
 
-        // enviar o email para troca de senha
-        await this.mailer.sendMail({
-            subject: 'Recuperacao de senha', 
-            to: 'rafavfx1@gmail.com',
-            template: 'forget',
-            context: {
-                name: find_email.login,
-            }
-        });
+        // // enviar o email para troca de senha
+        // await this.mailer.sendMail({
+        //     subject: 'Recuperacao de senha', 
+        //     to: 'rafavfx1@gmail.com',
+        //     template: 'forget',
+        //     context: {
+        //         name: find_email.login,
+        //     }
+        // });
         
-        // return true;
     }
 
     async register(email: string, login: string, password: string, role: any){
         
-        if(role != undefined){
-            role = parseInt(role);
-        }
+        // if(role != undefined){
+        //     role = parseInt(role);
+        // }
 
-        let password_hash = await bcrypt.hash(password, await bcrypt.genSalt())
+        // let password_hash = await bcrypt.hash(password, await bcrypt.genSalt())
 
-        const user =  await this.prisma.users_auth.create({
-            data: {
-                email: email,
-                pass: password_hash, 
-                login: login,
-                role: role
-            }
-        });
+        // const user =  await this.prisma.users_auth.create({
+        //     data: {
+        //         email: email,
+        //         pass: password_hash, 
+        //         login: login,
+        //         role: role
+        //     }
+        // });
 
-        this.createToken(user)
-        return {msg: 'Usuário criado com sucesso!'}
+        // this.createToken(user)
+        // return {msg: 'Usuário criado com sucesso!'}
     }
 
     async show_user(id: number){
-        const user = await this.prisma.users_auth.findFirst({
-            where: {
-                id: id
-            }
-        });
+        // const user = await this.prisma.users_auth.findFirst({
+        //     where: {
+        //         id: id
+        //     }
+        // });
 
-        return user;
+        // return user;
     }
 }

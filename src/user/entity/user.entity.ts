@@ -11,30 +11,24 @@ export class UserEntity {
     @Column({
         length: 60
     })
-    name: string;
+    login: string;
 
     @Column({
-        type: "date"
+        type: "longtext"
     })
-    birthdate: string;
-
-    @Column({
-        length: 50
-    })
-    cep: string;
+    pass: string;
 
     @Column({
         length: 50
     })
     email: string;
 
-    @Column({
-        length: 50
-    })
-    cnpj: string;
     
     @CreateDateColumn({
         type: "timestamp"
     })
     created_at: string;
+
+    @Column()
+    role: number
 }
