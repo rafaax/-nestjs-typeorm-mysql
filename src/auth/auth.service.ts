@@ -18,6 +18,7 @@ export class AuthService {
     ) {}
 
     async createToken(user: UserEntity){
+        
         return this.jwtService.sign({
             sub: user.id,
             name: user.login,
@@ -50,11 +51,6 @@ export class AuthService {
     }
 
     async login(login: string, password: string){
-        // // const  find_user = await this.prisma.users_auth.findFirst({
-        // //     where: {
-        // //         login: login
-        // //     }
-        // // });
 
         const user = await this.usersRepository.findOne({
             where: {
@@ -62,68 +58,44 @@ export class AuthService {
             }
         })
 
-        console.log(user)
 
-        // if(find_user == undefined){
-        //     throw new NotFoundException("Usuário invalido...");
-        // }
+        if(user == undefined){
+            throw new NotFoundException("Usuário invalido...");
+        }
         
 
-        // // faz a comparação da string decryptada com a senha passada pelo user no post
-        // if(await bcrypt.compare(password, find_user.pass)){
-        //     return {
-        //         "access_token": await this.createToken(find_user)
-        //     }
-        // }else{
-        //     throw new NotFoundException("Usuário invalido...");
-        // }
-
-
-            
+        // faz a comparação da string decryptada com a senha passada pelo user no post
+        if(await bcrypt.compare(password, user.pass)){
+            return {
+                "access_token": await this.createToken(user)
+            }
+        }else{
+            throw new NotFoundException("Usuário invalido...");
+        }
+   
     }
-
-    async reset(password: string, token: string){
-
-        // validar token para obter o id 
-
-        const id : number = 0;
-
-        // const user = await this.prisma.users_auth.update({
-        //     where: {
-        //         id: id
-        //     },
-        //     data: {
-        //         pass: password
-        //     }
-        // })
-
-        // return this.createToken(user);
-
-    }
-
+    
     async forget(email:string){
 
-        // const find_email = await this.prisma.users_auth.findFirst({
-        //     where: {
-        //         email: email
-        //     }
-        // })
+        const find_email = await this.usersRepository.findOne({
+            where: {
+                email: email
+            }
+        })
 
-        // if(find_email == undefined){
-        //     throw new BadRequestException("Email incorreto!");
-        // }
+        if(find_email == undefined){
+            throw new BadRequestException("Email incorreto!");
+        }
 
-        // console.log(find_email);
-
-        // // enviar o email para troca de senha
-        // await this.mailer.sendMail({
-        //     subject: 'Recuperacao de senha', 
-        //     to: 'rafavfx1@gmail.com',
-        //     template: 'forget',
-        //     context: {
-        //         name: find_email.login,
-        //     }
-        // });
+        // enviar o email para troca de senha
+        await this.mailer.sendMail({
+            subject: 'Recuperacao de senha', 
+            to: 'rafavfx1@gmail.com',
+            template: 'forget',
+            context: {
+                name: find_email.login,
+            }
+        });
         
     }
 

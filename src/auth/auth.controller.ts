@@ -38,12 +38,6 @@ export class AuthController {
         return this.authService.forget(body.email);
     }
 
-    @Post('reset')
-    async reset_password(@Body() body: AuthResetDTO){
-        return this.authService.reset(body.password, body.token)
-    }
-
-
     // usando guardas 
     // AuthGuard -> validar se esta sendo usado o token para uso da rota
     // Role guard para validar se o token usado, é de um usuário que tem a permissão(Role) do Enum referente ao decorator @Roles(Role.Admin) 

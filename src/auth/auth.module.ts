@@ -10,7 +10,7 @@ import { UserEntity } from "./entity/user.entity";
     imports: [
         
         JwtModule.register({
-            secret: process.env.JWT_SECRET
+            secret: String(process.env.JWT_SECRET) // deve ser uma string
         }),
         FileModule, 
         TypeOrmModule.forFeature([UserEntity])
